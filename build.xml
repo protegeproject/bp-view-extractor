@@ -1,0 +1,51 @@
+<?xml version="1.0"?> 
+<project name="NCBO Ontology Extractor" default="run" basedir=".">
+    <property name="src" location="./src"/>
+    <property name="lib" location="./lib"/>
+    <property name="build" location = "./build"/>
+    <property name="classes" location = "${build}/classes"/>
+    
+    <path id="project.classpath">
+      <fileset dir="${lib}" includes="*.jar"/>
+    </path>
+    
+	<target name = "init">
+		<mkdir dir="${classes}"/>
+	</target>
+	
+    <target name = "compile" depends = "init">
+      <javac srcdir="${src}" debug="on" destdir="${classes}" source="1.5" target="1.5">
+      	<classpath refid="project.classpath"/>
+      </javac>
+    </target>
+    
+    <target name = "bundle" depends = "compile">
+      <jar basedir="${classes}" destfile="${build}/org.ncbo.stanford.extractor.jar"  manifest="./META-INF/MANIFEST.MF"/>
+    </target>
+        
+    <target name = "run" depends="compile">
+      <java classname="org.ncbo.stanford.extractor.ExtractionUtil" fork="true">
+        <classpath>
+          <path refid="project.classpath"/>
+          <pathelement location="${classes}"/>
+        </classpath>
+      	 <jvmarg value="-Xmx1000M"/>
+      	 <jvmarg value="-Dlog4j.configuration=file:log4j.xml"/>      	
+      </java>
+    </target>
+
+    <target name = "debug" depends="compile">
+      <java classname="org.ncbo.stanford.extractor.ExtractionUtil" fork="true">
+        <classpath>
+          <path refid="project.classpath"/>
+          <pathelement location="${classes}"/>
+        </classpath>
+      	<jvmarg value="-agentlib:jdwp=transport=dt_socket,address=8100,server=y,suspend=y"/>
+      </java>
+    </target>
+    
+	<target name = "clean">
+		<delete dir="${build}"/>
+	</target>
+	
+</project>

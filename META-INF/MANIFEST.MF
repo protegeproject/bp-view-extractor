@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bioportal Extraction Utility
+Bundle-SymbolicName: StandaloneBPExtractor
+Bundle-Version: 1.0.0
+Bundle-Vendor: The Protege Development Team
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Activator: org.ncbo.stanford.extractor.ExtractionUtil
+Import-Package: org.ncbo.stanford.bean.concept,
+ org.ncbo.stanford.bean.search,
+ org.ncbo.stanford.extractor,
+ org.ncbo.stanford.util,
+ org.osgi.framework
+Require-Bundle: org.semanticweb.owl.owlapi;bundle-version="[3.0.0,4.0.0)",
+ org.protege.common;bundle-version="[3.0.0,4.0.0)"
+Bundle-ClassPath: lib/bioportal-services-lib.jar,
+ .,
+ lib/xpp3_min-1.1.4c.jar,
+ lib/xstream-1.3.1.jar
+Export-Package: org.ncbo.stanford.bean.concept,
+ org.ncbo.stanford.bean.search,
+ org.ncbo.stanford.extractor,
+ org.ncbo.stanford.util
