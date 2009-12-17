@@ -3,6 +3,7 @@ package org.ncbo.stanford.extractor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
@@ -11,7 +12,7 @@ import org.apache.log4j.Logger;
 
 public class NcboProperties {
 	private static transient Logger log = Logger.getLogger(NcboProperties.class);
-	
+
     public static final String DELAY_PROPERTY               = "bioportal.delay.ms";
     public static final String CALLS_BETWEEN_DELAY_PROPERTY = "bioportal.calls.between.delays";
     public static final String ONTOLOGY_ID_PROPERTY         = "bioportal.ontology.ref";
@@ -22,23 +23,23 @@ public class NcboProperties {
     public static final String ONTOLOGY_NAME_PROPERTY       = "target.ontology.name";
     public static final String APPEND_PROPERTY              = "target.append.existing.ontology";
     public static final String CLASS_PREFIX 				= "target.class.prefix";
-    
+
     public static final String LOG_COUNT_PROPERTY  = "log.count";
     public static final String SAVE_COUNT_PROPERTY  = "save.count";
-    
+
     //TODO: should not be static
     private static Collection<String> filteredProps;
-    
+
     private static Properties p = new Properties();
     static {
         try {
             p.load(new FileInputStream(new File("local.properties")));
         }
         catch (IOException ioe) {
-            log.error("Could not load properties file", ioe);            
+            log.error("Could not load properties file", ioe);
         }
     }
-    
+
     public static long getBioportalDelay() {
         String delay = p.getProperty(DELAY_PROPERTY);
         return Long.parseLong(delay);
@@ -64,17 +65,17 @@ public class NcboProperties {
         String appendPropertyValue = p.getProperty(APPEND_PROPERTY);
         return !(appendPropertyValue == null || !appendPropertyValue.toLowerCase().equals("true"));
     }
-    
+
     public static Collection<String> getFilteredOutProperties() {
     	if (filteredProps == null) {
     		String allProps = p.getProperty(FILTERED_OUT_PROPERTIES);
-    		if (allProps == null) { return null;}
+    		if (allProps == null) { return new ArrayList<String>();}
     		String[] allPropsArray = allProps.split(",");
     		filteredProps = Arrays.asList(allPropsArray);
-    	} 
+    	}
     	return filteredProps;
     }
-    
+
     public static int getLogCount(int defaultValue) {
     	String c = p.getProperty(LOG_COUNT_PROPERTY);
     	if (c == null) { return defaultValue;}
@@ -84,7 +85,7 @@ public class NcboProperties {
 		} catch (Throwable e) { }
 		return count;
     }
-    
+
     public static int getSaveCount(int defaultValue) {
     	String c = p.getProperty(SAVE_COUNT_PROPERTY);
     	if (c == null) { return defaultValue;}
@@ -94,7 +95,7 @@ public class NcboProperties {
 		} catch (Throwable e) { }
 		return count;
     }
-    
+
     public static String getClassPrefix() {
     	String c = p.getProperty(CLASS_PREFIX);
     	return c == null ? "" : c;
