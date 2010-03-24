@@ -23,6 +23,7 @@ public class NcboProperties {
     public static final String ONTOLOGY_NAME_PROPERTY       = "target.ontology.name";
     public static final String APPEND_PROPERTY              = "target.append.existing.ontology";
     public static final String CLASS_PREFIX 				= "target.class.prefix";
+    public static final String ID_PROP_NAME                 = "target.id.prop";
 
     public static final String LOG_COUNT_PROPERTY  = "log.count";
     public static final String SAVE_COUNT_PROPERTY  = "save.count";
@@ -59,6 +60,10 @@ public class NcboProperties {
 
     public static String getOwlOntologyName() {
         return p.getProperty(ONTOLOGY_NAME_PROPERTY);
+    }
+
+    public static String getIdPropertyName() {
+        return p.getProperty(ID_PROP_NAME);
     }
 
     public static boolean getAppendOntologyFile() {
