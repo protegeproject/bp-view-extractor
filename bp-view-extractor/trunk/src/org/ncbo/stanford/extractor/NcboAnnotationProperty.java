@@ -17,9 +17,9 @@ public class NcboAnnotationProperty {
     private OWLOntologyManager manager;
     private OWLOntology  ontology;
     private String lookupString;
-    
+
     private OWLAnnotationProperty annotationProperty;
-    
+
     public NcboAnnotationProperty(OWLOntologyManager manager, OWLOntology ontology,
                                   IRI id,  String label, String lookupString) throws OWLOntologyChangeException {
         this.manager = manager;
@@ -33,7 +33,9 @@ public class NcboAnnotationProperty {
                                                                 id, factory.getOWLStringLiteral(label));
         manager.addAxiom(ontology, axiom);
     }
-    
+
+
+
     @SuppressWarnings("unchecked")
     public void transferFromBioportal(NcboConcept c) throws OWLOntologyChangeException {
         OWLDataFactory factory  = manager.getOWLDataFactory();
@@ -45,7 +47,7 @@ public class NcboAnnotationProperty {
             if (o2 instanceof String) {
                 OWLStringLiteral  annotationValue = factory.getOWLStringLiteral((String) o2);
                 OWLAxiom axiom = factory.getOWLAnnotationAssertionAxiom(annotationProperty,
-                                                                        c.getOwlClass().getIRI(), 
+                                                                        c.getOwlClass().getIRI(),
                                                                         annotationValue);
                 manager.addAxiom(ontology, axiom);
             } else if (o2 instanceof ClassBean) {
@@ -53,10 +55,23 @@ public class NcboAnnotationProperty {
             	String label = ((ClassBean)o2).getLabel();
             	OWLStringLiteral annotationValue = factory.getOWLStringLiteral(label + " (Id: " + id + ")");
                 OWLAxiom axiom = factory.getOWLAnnotationAssertionAxiom(annotationProperty,
-                                                                        c.getOwlClass().getIRI(), 
+                                                                        c.getOwlClass().getIRI(),
                                                                         annotationValue);
                 manager.addAxiom(ontology, axiom);
             }
+        }
+        //also add a an id, if specified
+        addId(c.getOwlClass().getIRI(), c.getName());
+    }
+
+    private void addId(IRI id, String name) throws OWLOntologyChangeException {
+        String idPropertyName = NcboProperties.getIdPropertyName();
+        if (idPropertyName != null) {
+            OWLDataFactory factory  = manager.getOWLDataFactory();
+            OWLAxiom axiom = factory.getOWLAnnotationAssertionAxiom
+                (factory.getOWLAnnotationProperty(IRI.create(idPropertyName)),
+                    id, factory.getOWLStringLiteral(name));
+            manager.addAxiom(ontology, axiom);
         }
     }
 }
