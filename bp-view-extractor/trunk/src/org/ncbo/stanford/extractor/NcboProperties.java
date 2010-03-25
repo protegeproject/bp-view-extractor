@@ -24,9 +24,12 @@ public class NcboProperties {
     public static final String APPEND_PROPERTY              = "target.append.existing.ontology";
     public static final String CLASS_PREFIX 				= "target.class.prefix";
     public static final String ID_PROP_NAME                 = "target.id.prop";
+    public static final String SYNONYM_PROP_NAME            = "target.synonym.prop";
 
     public static final String LOG_COUNT_PROPERTY  = "log.count";
     public static final String SAVE_COUNT_PROPERTY  = "save.count";
+
+
 
     //TODO: should not be static
     private static Collection<String> filteredProps;
@@ -64,6 +67,11 @@ public class NcboProperties {
 
     public static String getIdPropertyName() {
         return p.getProperty(ID_PROP_NAME);
+    }
+
+    public static String getSynonymPropertyName() {
+        String synProp = p.getProperty(SYNONYM_PROP_NAME);
+        return synProp == null ? getOwlOntologyName() + "#" + "synonym" : synProp;
     }
 
     public static boolean getAppendOntologyFile() {

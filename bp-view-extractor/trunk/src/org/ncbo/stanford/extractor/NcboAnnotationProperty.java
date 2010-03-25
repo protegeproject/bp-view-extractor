@@ -60,18 +60,7 @@ public class NcboAnnotationProperty {
                 manager.addAxiom(ontology, axiom);
             }
         }
-        //also add a an id, if specified
-        addId(c.getOwlClass().getIRI(), c.getName());
     }
 
-    private void addId(IRI id, String name) throws OWLOntologyChangeException {
-        String idPropertyName = NcboProperties.getIdPropertyName();
-        if (idPropertyName != null) {
-            OWLDataFactory factory  = manager.getOWLDataFactory();
-            OWLAxiom axiom = factory.getOWLAnnotationAssertionAxiom
-                (factory.getOWLAnnotationProperty(IRI.create(idPropertyName)),
-                    id, factory.getOWLStringLiteral(name));
-            manager.addAxiom(ontology, axiom);
-        }
-    }
+
 }
